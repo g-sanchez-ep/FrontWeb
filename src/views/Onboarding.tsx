@@ -38,7 +38,7 @@ const Onboarding = () => {
         }
     };
 
-    // Usamos useEffect para actualizar el progreso cuando el estado de los archivos cambie
+
     useEffect(() => {
         const filledFiles = Object.values(files).filter(f => f !== null).length;
         setProgress((filledFiles / 3) * 100);
@@ -85,7 +85,7 @@ const Onboarding = () => {
 
                 <div className="file-upload-wrapper">
                     <label htmlFor="selfie" className="file-upload-label">
-                        <span>Selfie con tu INE</span>
+                        <span>Selfie</span>
                         {files.selfie && <span className="file-name">{files.selfie.name}</span>}
                     </label>
                     <input id="selfie" type="file" name="selfie" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" />
