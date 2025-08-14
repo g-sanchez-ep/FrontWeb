@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Onboarding.css';
 
-// Interfaz para el estado de los archivos
 interface IFiles {
     ineFrontal: File | null;
     ineTrasero: File | null;
     selfie: File | null;
 }
 
-const Onboarding = () => { // Se elimina : JSX.Element
+const Onboarding = () => {
     const [files, setFiles] = useState<IFiles>({ ineFrontal: null, ineTrasero: null, selfie: null });
     const [salary, setSalary] = useState<string>('');
     const [agreedToCreditCheck, setAgreedToCreditCheck] = useState<boolean>(false);
@@ -22,32 +21,28 @@ const Onboarding = () => { // Se elimina : JSX.Element
         const file = e.target.files?.[0];
 
         if (file) {
-            // Validación de tipo de archivo
-            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'];
             if (!allowedTypes.includes(file.type)) {
-                alert('Tipo de archivo no permitido. Solo se aceptan .jpeg, .png, .pdf.');
-                e.target.value = ''; // Limpiar el input
+                alert('Tipo de archivo no permitido. Solo se aceptan .jpeg, .jpg, .png, .pdf.');
+                e.target.value = '';
                 return;
             }
 
-            // Validación de tamaño de archivo (máximo 2MB)
             if (file.size > 2 * 1024 * 1024) {
                 alert('El archivo no debe pesar más de 2MB.');
-                e.target.value = ''; // Limpiar el input
+                e.target.value = '';
                 return;
             }
 
-            const newFiles = { ...files, [name]: file };
-            setFiles(newFiles);
-            updateProgress(newFiles);
+            setFiles(prev => ({ ...prev, [name]: file }));
         }
     };
 
-    // Actualiza la barra de progreso
-    const updateProgress = (currentFiles: IFiles) => {
-        const filledFields = Object.values(currentFiles).filter(f => f !== null).length;
-        setProgress((filledFields / 3) * 100);
-    };
+    // Usamos useEffect para actualizar el progreso cuando el estado de los archivos cambie
+    useEffect(() => {
+        const filledFiles = Object.values(files).filter(f => f !== null).length;
+        setProgress((filledFiles / 3) * 100);
+    }, [files]);
 
     const handleSubmit = () => {
         if (Object.values(files).some(f => f === null) || !salary || !agreedToCreditCheck) {
@@ -71,19 +66,37 @@ const Onboarding = () => { // Se elimina : JSX.Element
             </div>
 
             <div className="file-upload-section">
-                <label>INE Frontal</label>
-                <input type="file" name="ineFrontal" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" required />
-                <label>INE Trasero</label>
-                <input type="file" name="ineTrasero" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" required />
-                <label>Selfie con tu INE</label>
-                <input type="file" name="selfie" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" required />
+                {/* --- NUEVA ESTRUCTURA PARA UPLOADERS --- */}
+                <div className="file-upload-wrapper">
+                    <label htmlFor="ineFrontal" className="file-upload-label">
+                        <span>INE Frontal</span>
+                        {files.ineFrontal && <span className="file-name">{files.ineFrontal.name}</span>}
+                    </label>
+                    <input id="ineFrontal" type="file" name="ineFrontal" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" />
+                </div>
+
+                <div className="file-upload-wrapper">
+                    <label htmlFor="ineTrasero" className="file-upload-label">
+                        <span>INE Trasero</span>
+                        {files.ineTrasero && <span className="file-name">{files.ineTrasero.name}</span>}
+                    </label>
+                    <input id="ineTrasero" type="file" name="ineTrasero" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" />
+                </div>
+
+                <div className="file-upload-wrapper">
+                    <label htmlFor="selfie" className="file-upload-label">
+                        <span>Selfie con tu INE</span>
+                        {files.selfie && <span className="file-name">{files.selfie.name}</span>}
+                    </label>
+                    <input id="selfie" type="file" name="selfie" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" />
+                </div>
             </div>
 
             <input
                 type="number"
                 placeholder="Ingresa tu sueldo mensual neto"
                 value={salary}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSalary(e.target.value)}
+                onChange={(e) => setSalary(e.target.value)}
                 required
             />
 
