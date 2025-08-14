@@ -12,7 +12,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <h1>Arrendadora de Vehículos</h1>
+          <h1>Renta de Vehículos</h1>
         </header>
         {/* Este es el único cambio: añadir className="App-main" */}
         <main className="App-main">
