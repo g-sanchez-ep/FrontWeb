@@ -1,4 +1,4 @@
-/* src/views/Resultado.css */
+
 
 .resultado-container {
   background-color: var(--surface-color);
@@ -6,7 +6,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   width: 100%;
-  max-width: 700px; /* Más ancho para mostrar opciones */
+  max-width: 700px;
   border: 1px solid var(--border-color);
   text-align: center;
 }
@@ -17,7 +17,7 @@
   margin-top: 0;
 }
 
-/* Vista Aprobado */
+
 .car-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -59,14 +59,14 @@
   color: #b0b0b0;
 }
 
-/* Vista Rechazado */
+
 .rejected-img {
     max-width: 200px;
     margin: 2rem 0;
     opacity: 0.6;
 }
 
-/* Botones */
+
 .resultado-container button {
   padding: 10px 20px;
   border: 1px solid var(--primary-color);

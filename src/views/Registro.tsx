@@ -112,8 +112,8 @@ const Registro = () => {
           {verificationCode.map((digit, index) => (
             <input
               key={index}
-              // ----- ESTA ES LA LÍNEA CORREGIDA -----
-              // Se cambiaron los paréntesis () por llaves {} para evitar el retorno implícito.
+
+
               ref={(el) => { inputRefs.current[index] = el; }}
               type="text"
               inputMode="numeric"

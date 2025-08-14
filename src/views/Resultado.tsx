@@ -23,15 +23,15 @@ interface ICarOption {
 const Resultado = () => {
     const location = useLocation();
 
-    // --- LÓGICA VERIFICADA ---
-    // Si location.state no existe, se usará el objeto por defecto '{ status: 'rechazado' }'.
-    // Esto asegura que siempre tengamos un estado inicial válido.
+
+
+
     const { status: initialStatus, salary } = (location.state as LocationState) || { status: 'rechazado', salary: 0 };
 
     const [status, setStatus] = useState<'aprobado' | 'rechazado'>(initialStatus);
 
-    // TIP DE DEBUGGING: Descomenta la siguiente línea para ver en la consola qué estado está llegando.
-    // console.log("Estado recibido:", location.state);
+
+
 
     const maxRent = salary * 0.30;
 
