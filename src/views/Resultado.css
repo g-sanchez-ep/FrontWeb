@@ -1,40 +1,77 @@
 /* src/views/Resultado.css */
 
+/* --- 1. FONDO ANIMADO A PRUEBA DE FALLOS --- */
 .result-page-container {
-  /* --- MEJORA DE FONDO --- */
-  /* Este gradiente radial sutil crea un efecto de luz suave desde la esquina superior. */
-  background-color: #f8f9fa; /* Un blanco ligeramente más cálido */
-  background-image: radial-gradient(circle at 10% 10%, #eef2ff 0%, rgba(255,255,255,0) 25%);
+  background-color: #f0f2f5; /* Un fondo base neutro y claro */
   min-height: 100vh;
   padding: 4rem 2rem;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Estilo para las "burbujas" de color (ahora son divs) */
+.blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: blur(120px);
+  z-index: 1;
+}
+
+/* Posición, color y animación de la primera burbuja */
+.blob1 {
+  background-color: #c2d8ff; /* Azul pastel */
+  top: -10%;
+  left: -10%;
+  animation: moveBlob1 18s infinite alternate ease-in-out;
+}
+
+/* Posición, color y animación de la segunda burbuja */
+.blob2 {
+  background-color: #e9d5ff; /* Lavanda pastel */
+  bottom: -15%;
+  right: -15%;
+  animation: moveBlob2 22s infinite alternate ease-in-out;
+}
+
+@keyframes moveBlob1 {
+  from { transform: translate(0, 0) rotate(0deg) scale(1); }
+  to { transform: translate(200px, 100px) rotate(180deg) scale(1.2); }
+}
+@keyframes moveBlob2 {
+  from { transform: translate(0, 0) rotate(0deg) scale(1.2); }
+  to { transform: translate(-200px, -100px) rotate(180deg) scale(1); }
+}
+
+/* --- 2. DISEÑO DE TARJETA "GLASSMORPHISM" --- */
 .result-content-wrapper {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
   animation: fadeIn 0.8s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.result-card {
+  /* El efecto de vidrio esmerilado */
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Para compatibilidad con Safari */
+
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  padding: 3rem;
 }
 
-/* ... (El resto de los estilos de .result-header, .result-icon-wrapper, etc., se mantienen exactamente igual que antes) ... */
-
-/* Encabezado de Resultado (Icono Animado y Texto) */
-.result-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.result-icon-wrapper {
-  width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1.5rem auto; animation: popIn 0.5s 0.2s ease-out backwards;
-}
-@keyframes popIn {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+/* ... (El resto de los estilos de .result-header, .car-card, etc., se mantienen y funcionarán perfectamente con el nuevo diseño) ... */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.result-header { text-align: center; margin-bottom: 3rem; }
+.result-icon-wrapper { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1.5rem auto; animation: popIn 0.5s 0.2s ease-out backwards; }
+@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .result-icon-wrapper.approved { background-color: #e6f7f0; }
 .result-icon-wrapper.rejected { background-color: #fbe9e7; }
 .result-icon-wrapper svg { width: 40px; height: 40px; }
@@ -42,39 +79,23 @@
 .result-icon-wrapper.rejected svg { color: var(--error-color); }
 .result-content h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); }
 .result-content p.subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 550px; margin: 0 auto; line-height: 1.6; }
-
-/* Vista Aprobado: Sección de Renta y Tarjetas de Coches */
-.rent-highlight-box {
-  background-color: var(--surface-white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin: 2.5rem 0; text-align: center;
-}
+.rent-highlight-box { background-color: rgba(248, 250, 252, 0.8); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin: 2.5rem 0; text-align: center; }
 .rent-highlight-box p { margin: 0; color: var(--text-secondary); font-size: 1rem; }
 .rent-highlight-box .rent-amount { font-size: 2rem; font-weight: 700; color: var(--primary-brand); }
-.car-options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.car-options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
 .car-card { background-color: var(--surface-white); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; }
 .car-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(100, 100, 111, 0.15); }
 .car-card img { width: 100%; height: 140px; object-fit: cover; }
 .car-card-info { padding: 1rem; }
 .car-card-info h4 { margin: 0 0 0.25rem 0; color: var(--text-primary); font-weight: 600; }
 .car-card-info p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
-
-/* Vista Rechazado: Layout con Ilustración */
-.rejected-layout {
-  display: flex; align-items: center; gap: 3rem; background-color: var(--surface-white); border-radius: 12px; padding: 3rem; margin-top: 3rem; border: 1px solid var(--border-color);
-}
-.rejected-illustration {
-  flex-shrink: 0; width: 220px;
-}
-.rejected-illustration svg {
-  width: 100%; height: auto;
-}
+.rejected-layout { display: flex; align-items: center; gap: 3rem; background-color: rgba(248, 250, 252, 0.8); border-radius: 12px; padding: 3rem; margin-top: 3rem; border: 1px solid var(--border-color); }
+.rejected-illustration { flex-shrink: 0; width: 220px; }
+.rejected-illustration svg { width: 100%; height: auto; }
 .rejected-text-content h3 { font-weight: 600; margin-top: 0; margin-bottom: 1rem; }
 .rejected-text-content p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7; }
-
-/* Botones de Acción (Call to Action) */
 .result-actions { margin-top: 3rem; text-align: center; }
-.result-actions button {
-  padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;
-}
+.result-actions button { padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
 .primary-action { background-color: var(--primary-brand); color: white; }
 .primary-action:hover { background-color: var(--primary-brand-dark); box-shadow: 0 4px 15px rgba(106, 90, 205, 0.2); }
 .secondary-action { background-color: transparent; color: var(--text-secondary); border-color: var(--border-color); margin-left: 1rem; }

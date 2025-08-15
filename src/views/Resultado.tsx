@@ -33,12 +33,10 @@ const Resultado = () => {
                 <h2>¡Felicidades! Tu solicitud ha sido autorizada</h2>
                 <p className="subtitle">Hemos preparado algunas opciones de vehículos que se ajustan a tu perfil.</p>
             </div>
-
             <div className="rent-highlight-box">
                 <p>Tu renta mensual máxima autorizada es de:</p>
                 <p className="rent-amount">${maxRent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
             </div>
-
             <div className="car-options-grid">
                 {carOptions.map(car => (
                     <div className="car-card" key={car.name}>
@@ -50,7 +48,6 @@ const Resultado = () => {
                     </div>
                 ))}
             </div>
-
             <div className="result-actions">
                 <button className="secondary-action" onClick={() => setStatus('rechazado')}>No me interesan, ver otras opciones</button>
             </div>
@@ -66,10 +63,8 @@ const Resultado = () => {
                 <h2>Solicitud no autorizada por ahora</h2>
                 <p className="subtitle">En esta ocasión no fue posible completar tu trámite, pero no te preocupes, hay otras opciones.</p>
             </div>
-
             <div className="rejected-layout">
                 <div className="rejected-illustration">
-                    {/* --- ILUSTRACIÓN SVG MEJORADA --- */}
                     <svg width="100%" height="100%" viewBox="0 0 221 184" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="35.5" y="27.5" width="150" height="156" rx="11.5" fill="#F8FAFC" stroke="#E2E8F0"/>
                         <path d="M56 61H166" stroke="#CBD5E1" strokeWidth="2" strokeLinecap="round"/>
@@ -96,8 +91,14 @@ const Resultado = () => {
 
     return (
         <div className="result-page-container">
+            {/* --- Las burbujas animadas viven aquí, en el fondo --- */}
+            <div className="blob blob1"></div>
+            <div className="blob blob2"></div>
+
             <div className="result-content-wrapper">
-                {status === 'aprobado' ? <AprobadoView /> : <RechazadoView />}
+                <div className="result-card">
+                    {status === 'aprobado' ? <AprobadoView /> : <RechazadoView />}
+                </div>
             </div>
         </div>
     );
