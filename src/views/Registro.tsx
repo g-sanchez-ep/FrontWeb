@@ -9,6 +9,40 @@ import { useApplication } from '../context/ApplicationContext';
 import './Registro.css';
 import './ModalVerification.css';
 
+const termsAndConditions = `
+Última actualización: 15 de agosto de 2025
+
+Bienvenido(a) a AutoRenta. Al acceder o utilizar esta aplicación, aceptas cumplir con los siguientes Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, te recomendamos no utilizar el servicio.
+
+1. Objeto
+Este documento regula el uso de la plataforma AutoRenta, destinada a gestionar el alquiler de vehículos de manera sencilla y segura.
+
+2. Uso autorizado
+- Utilizar la plataforma únicamente para fines legales y permitidos.
+- No intentar acceder a áreas restringidas, modificar el código, ni realizar ingeniería inversa.
+- Mantener la confidencialidad de sus credenciales de acceso.
+
+3. Registro y datos personales
+Para utilizar ciertas funciones, el usuario debe proporcionar información veraz y actualizada. La plataforma podrá almacenar y procesar datos conforme a la Política de Privacidad correspondiente.
+
+4. Propiedad intelectual
+Todos los contenidos, marcas, logotipos, y el software de AutoRenta son propiedad de sus respectivos titulares y están protegidos por las leyes de propiedad intelectual.
+
+5. Limitación de responsabilidad
+AutoRenta no se hace responsable por:
+- Fallos técnicos, interrupciones o errores de funcionamiento.
+- Uso indebido de la plataforma por parte del usuario.
+- Pérdidas derivadas de eventos fuera de nuestro control (fuerza mayor).
+
+6. Modificaciones
+Nos reservamos el derecho a modificar estos Términos y Condiciones en cualquier momento. Las modificaciones se publicarán en la plataforma y entrarán en vigor inmediatamente.
+
+7. Legislación aplicable
+Estos Términos se rigen por las leyes de México, y cualquier disputa será resuelta en los tribunales competentes de dicha jurisdicción.
+
+Nota: Este texto es un ejemplo ficticio y no constituye asesoramiento legal.
+`;
+
 const schema = z.object({
   email: z.string().min(1, { message: "El correo es requerido." }).email({ message: "El formato del correo no es válido." }),
   phone: z.string().min(10, { message: "El teléfono debe tener al menos 10 dígitos." }),
@@ -36,20 +70,46 @@ const Registro = () => {
     resolver: zodResolver(schema),
     mode: 'onBlur',
   });
+
   const [isTermsModalOpen, setTermsModalOpen] = useState(false);
   const [isVerificationModalOpen, setVerificationModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
   const [formData, setFormData] = useState<Pick<FormFields, 'email' | 'phone'>>();
   const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setFormData({ email: data.email, phone: data.phone });
     setVerificationModalOpen(true);
   };
-  const handleContinueToOnboarding = () => { if (formData) { saveRegistration(formData); setInfoModalOpen(false); navigate('/onboarding'); } };
-  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => { const value = e.target.value; if (isNaN(Number(value))) return; const newCode = [...verificationCode]; newCode[index] = value.slice(-1); setVerificationCode(newCode); if (value && index < 3) inputRefs.current[index + 1]?.focus(); };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => { if (e.key === 'Backspace' && e.currentTarget.value === '' && index > 0) { inputRefs.current[index - 1]?.focus(); } };
-  const handleVerificationSubmit = () => { setVerificationModalOpen(false); setInfoModalOpen(true); };
+
+  const handleContinueToOnboarding = () => {
+    if (formData) {
+      saveRegistration(formData);
+      setInfoModalOpen(false);
+      navigate('/onboarding');
+    }
+  };
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const value = e.target.value;
+    if (isNaN(Number(value))) return;
+    const newCode = [...verificationCode];
+    newCode[index] = value.slice(-1);
+    setVerificationCode(newCode);
+    if (value && index < 3) inputRefs.current[index + 1]?.focus();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'Backspace' && e.currentTarget.value === '' && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleVerificationSubmit = () => {
+    setVerificationModalOpen(false);
+    setInfoModalOpen(true);
+  };
 
   return (
     <>
@@ -82,7 +142,7 @@ const Registro = () => {
                 <p className="error-message">{errors.confirmPassword?.message}</p>
                 <div className="terms-container">
                     <input type="checkbox" id="terms" {...register("agreedToTerms")} />
-                    <label htmlFor="terms">Acepto los<span className="terms-link" onClick={() => setTermsModalOpen(true)}>Términos y Condiciones</span></label>
+                    <label htmlFor="terms">Acepto los <span className="terms-link" onClick={() => setTermsModalOpen(true)}>Términos y Condiciones</span></label>
                 </div>
                 <p className="error-message">{errors.agreedToTerms?.message}</p>
                 <button type="submit">Crear Cuenta</button>
@@ -91,10 +151,15 @@ const Registro = () => {
         </div>
       </div>
 
+      {/* 📜 Modal de Términos y Condiciones */}
       <Modal isOpen={isTermsModalOpen} onClose={() => setTermsModalOpen(false)}>
         <h2>Términos y Condiciones</h2>
-        <p>Aquí va el texto completo de los términos y condiciones del servicio...</p>
+        <div style={{ maxHeight: "400px", overflowY: "auto", whiteSpace: "pre-wrap" }}>
+          {termsAndConditions}
+        </div>
       </Modal>
+
+      {/* 📱 Modal de verificación */}
       <Modal isOpen={isVerificationModalOpen} onClose={() => setVerificationModalOpen(false)}>
         <h2>Verifica tu Teléfono</h2>
         <p>Ingresa el código de 4 dígitos que enviamos a tu teléfono.</p>
@@ -105,6 +170,8 @@ const Registro = () => {
         </div>
         <button onClick={handleVerificationSubmit} className="modal-button">Verificar</button>
       </Modal>
+
+      {/* ℹ Modal informativo */}
       <Modal isOpen={isInfoModalOpen} onClose={() => setInfoModalOpen(false)}>
         <h2>Ya casi terminamos</h2>
         <p>A continuación, validaremos tu identidad y consultaremos tu buró de crédito. Por favor, ten tu INE a la mano.</p>
