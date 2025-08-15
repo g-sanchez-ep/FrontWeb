@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApplication } from '../context/ApplicationContext';
 import './Resultado.css';
 
-// Importaciones de imágenes locales
+
 import versaImg from '../assets/images/nissan-versa.png';
 import rioImg from '../assets/images/kia-rio.png';
 import jettaImg from '../assets/images/vw-jetta.png';
@@ -91,7 +91,7 @@ const Resultado = () => {
 
     return (
         <div className="result-page-container">
-            {/* --- Las burbujas animadas viven aquí, en el fondo --- */}
+
             <div className="blob blob1"></div>
             <div className="blob blob2"></div>
 

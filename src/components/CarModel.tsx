@@ -11,7 +11,7 @@ const CarModel = () => {
         if (!mountRef.current) return;
         const currentMount = mountRef.current;
 
-        // 1. Configuración de la Escena
+
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, currentMount.clientWidth / currentMount.clientHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -19,15 +19,15 @@ const CarModel = () => {
         renderer.setPixelRatio(window.devicePixelRatio);
         currentMount.appendChild(renderer.domElement);
 
-        // 2. Controles de Órbita
+
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.enableZoom = false;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.75;
-        controls.target.set(0, 0, 0); // Asegura que los controles giren alrededor del centro
+        controls.target.set(0, 0, 0);
 
-        // 3. Iluminación de Estudio
+
         const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
         hemiLight.position.set(0, 20, 0);
         scene.add(hemiLight);
@@ -35,19 +35,19 @@ const CarModel = () => {
         dirLight.position.set(10, 10, 10);
         scene.add(dirLight);
 
-        // --- 4. POSICIÓN DE LA CÁMARA CORREGIDA ---
-        camera.position.set(0, 1.5, 7); // La elevamos un poco
-        camera.lookAt(0, 0, 0); // Hacemos que mire ligeramente hacia abajo
 
-        // 5. Cargar el Modelo 3D
+        camera.position.set(0, 1.5, 7);
+        camera.lookAt(0, 0, 0);
+
+
         const loader = new GLTFLoader();
         loader.load(
             '/models/car.glb',
             (gltf) => {
                 const model = gltf.scene;
                 model.scale.set(1.2, 1.2, 1.2);
-                // --- POSICIÓN DEL MODELO CORREGIDA ---
-                // Centramos el coche verticalmente en su escena
+
+
                 model.position.y = 0;
                 scene.add(model);
             },
@@ -57,7 +57,7 @@ const CarModel = () => {
             }
         );
 
-        // 6. Bucle de Animación
+
         const animate = () => {
             requestAnimationFrame(animate);
             controls.update();
@@ -65,7 +65,7 @@ const CarModel = () => {
         };
         animate();
 
-        // 7. Limpieza
+
         const handleResize = () => {
             if (currentMount) {
                 camera.aspect = currentMount.clientWidth / currentMount.clientHeight;

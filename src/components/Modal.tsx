@@ -3,9 +3,9 @@ import './Modal.css';
 
 
 interface ModalProps {
-  isOpen: boolean;          // Para saber si se debe mostrar o no.
-  onClose: () => void;      // La función que se ejecuta al cerrar.
-  children: React.ReactNode; // El contenido que irá dentro del modal.
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {

@@ -1,4 +1,4 @@
-/* src/components/CarModel.css */
+
 .car-model-container {
     position: absolute;
     top: 0;
@@ -12,3 +12,4 @@
 .car-model-container:active {
     cursor: grabbing;
 }
+

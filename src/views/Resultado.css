@@ -1,6 +1,4 @@
-/* src/views/Resultado.css */
 
-/* --- 1. FONDO DE GRADIENTE ANIMADO --- */
 .result-page-container {
   min-height: 100vh;
   padding: 4rem 2rem;
@@ -8,15 +6,13 @@
   position: relative;
   overflow: hidden;
 
-  /* Definimos un gradiente con 4 colores suaves */
+
   background: linear-gradient(135deg, #e0c3fc, #8ec5fc, #e0c3fc, #fbc2eb);
-  /* Hacemos el fondo 4 veces más grande que la pantalla */
   background-size: 400% 400%;
-  /* Aplicamos la animación que moverá el fondo */
   animation: gradient-animation 15s ease infinite;
 }
 
-/* La animación que cambia la posición del fondo */
+
 @keyframes gradient-animation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -24,7 +20,7 @@
 }
 
 
-/* --- 2. TARJETA "GLASSMORPHISM" (Funciona perfecto con el nuevo fondo) --- */
+
 .result-content-wrapper {
   max-width: 800px;
   margin: 0 auto;
@@ -43,7 +39,7 @@
   padding: 3rem;
 }
 
-/* ... (El resto de los estilos se mantienen exactamente igual) ... */
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .result-header { text-align: center; margin-bottom: 3rem; }
 .result-icon-wrapper { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1.5rem auto; animation: popIn 0.5s 0.2s ease-out backwards; }
