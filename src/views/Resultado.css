@@ -1,52 +1,30 @@
 /* src/views/Resultado.css */
 
-/* --- 1. FONDO ANIMADO A PRUEBA DE FALLOS --- */
+/* --- 1. FONDO DE GRADIENTE ANIMADO --- */
 .result-page-container {
-  background-color: #f0f2f5; /* Un fondo base neutro y claro */
   min-height: 100vh;
   padding: 4rem 2rem;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+
+  /* Definimos un gradiente con 4 colores suaves */
+  background: linear-gradient(135deg, #e0c3fc, #8ec5fc, #e0c3fc, #fbc2eb);
+  /* Hacemos el fondo 4 veces más grande que la pantalla */
+  background-size: 400% 400%;
+  /* Aplicamos la animación que moverá el fondo */
+  animation: gradient-animation 15s ease infinite;
 }
 
-/* Estilo para las "burbujas" de color (ahora son divs) */
-.blob {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  opacity: 0.6;
-  filter: blur(120px);
-  z-index: 1;
+/* La animación que cambia la posición del fondo */
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Posición, color y animación de la primera burbuja */
-.blob1 {
-  background-color: #c2d8ff; /* Azul pastel */
-  top: -10%;
-  left: -10%;
-  animation: moveBlob1 18s infinite alternate ease-in-out;
-}
 
-/* Posición, color y animación de la segunda burbuja */
-.blob2 {
-  background-color: #e9d5ff; /* Lavanda pastel */
-  bottom: -15%;
-  right: -15%;
-  animation: moveBlob2 22s infinite alternate ease-in-out;
-}
-
-@keyframes moveBlob1 {
-  from { transform: translate(0, 0) rotate(0deg) scale(1); }
-  to { transform: translate(200px, 100px) rotate(180deg) scale(1.2); }
-}
-@keyframes moveBlob2 {
-  from { transform: translate(0, 0) rotate(0deg) scale(1.2); }
-  to { transform: translate(-200px, -100px) rotate(180deg) scale(1); }
-}
-
-/* --- 2. DISEÑO DE TARJETA "GLASSMORPHISM" --- */
+/* --- 2. TARJETA "GLASSMORPHISM" (Funciona perfecto con el nuevo fondo) --- */
 .result-content-wrapper {
   max-width: 800px;
   margin: 0 auto;
@@ -56,18 +34,16 @@
 }
 
 .result-card {
-  /* El efecto de vidrio esmerilado */
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px); /* Para compatibilidad con Safari */
-
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
   padding: 3rem;
 }
 
-/* ... (El resto de los estilos de .result-header, .car-card, etc., se mantienen y funcionarán perfectamente con el nuevo diseño) ... */
+/* ... (El resto de los estilos se mantienen exactamente igual) ... */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .result-header { text-align: center; margin-bottom: 3rem; }
 .result-icon-wrapper { width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1.5rem auto; animation: popIn 0.5s 0.2s ease-out backwards; }

@@ -1,17 +1,17 @@
-/* src/App.css */
 
-/* 1. Definición de la Paleta de Colores y Tipografía Profesional */
+
+
 :root {
-  --background-light: #f4f7f9; /* Un gris muy claro para el fondo */
-  --surface-white: #ffffff;    /* Blanco puro para las tarjetas */
-  --primary-brand: #6a5acd;     /* Un morado más vibrante y amigable (SlateBlue) */
+  --background-light: #f4f7f9;
+  --surface-white: #ffffff;
+  --primary-brand: #6a5acd;
   --primary-brand-dark: #5a4baf;
-  --text-primary: #1a202c;      /* Texto principal oscuro, no negro puro */
-  --text-secondary: #718096;    /* Texto secundario más claro */
+  --text-primary: #1a202c;
+  --text-secondary: #718096;
   --border-color: #e2e8f0;
   --error-color: #e53e3e;
 
-  /* Usamos la fuente que importamos de Google Fonts */
+
   font-family: 'Poppins', -apple-system, BlinkMacSystem-Bold, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -23,12 +23,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 2. Eliminamos el viejo layout. App.tsx ya no controlará el centrado. */
+
 .App {
-  /* Este contenedor ahora solo ocupa el espacio necesario */
+
 }
 
-/* Eliminamos el header por defecto para integrarlo mejor en el nuevo diseño */
+
 .App-header {
   display: none;
 }

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Modal from '../components/Modal';
 import { useApplication } from '../context/ApplicationContext';
-import './Registro.css'; // Importa los nuevos estilos
+import './Registro.css';
 import './ModalVerification.css';
 
 // El esquema de Zod no cambia
@@ -30,7 +30,7 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 const Registro = () => {
-
+  // Toda la lógica de hooks y funciones se mantiene igual
   const { saveRegistration } = useApplication();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<FormFields>({
@@ -54,7 +54,7 @@ const Registro = () => {
 
   return (
     <>
-      <div className="split-screen-container">
+      <div className="registration-page-container">
         {/* --- PANEL IZQUIERDO --- */}
         <div className="left-pane">
           <h1>El auto de tus sueños, a tu alcance.</h1>
@@ -63,7 +63,7 @@ const Registro = () => {
 
         {/* --- PANEL DERECHO --- */}
         <div className="right-pane">
-          <div className="form-wrapper">
+          <div className="form-card">
             <h2>Crea tu cuenta</h2>
             <p className="subtitle">Comienza tu solicitud hoy mismo.</p>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
