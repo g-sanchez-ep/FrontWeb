@@ -50,8 +50,8 @@ const Onboarding = () => {
     };
 
     return (
-        <div className="page-container">
-            <div className="content-card onboarding-container">
+        <div className="onboarding-page-container">
+            <div className="onboarding-card">
                 <h2>Sube tus documentos</h2>
                 <div className="progress-bar-container">
                     <div className="progress-bar" style={{ width: `${progress}%` }}></div>
@@ -71,7 +71,7 @@ const Onboarding = () => {
                     <input id="ineTrasero" type="file" name="ineTrasero" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" hidden />
 
                     <label htmlFor="selfie" className="file-upload-label">
-                        <span>Selfie con tu INE</span>
+                        <span>Selfie</span>
                         {files.selfie && <span className="file-name">{files.selfie.name}</span>}
                     </label>
                     <input id="selfie" type="file" name="selfie" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" hidden />

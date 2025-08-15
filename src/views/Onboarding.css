@@ -1,27 +1,50 @@
 /* src/views/Onboarding.css */
 
-/* 1. Layout principal de la página (consistente con Resultado) */
-.page-container {
+/* --- 1. FONDO ANIMADO Y LAYOUT PRINCIPAL --- */
+.onboarding-page-container {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 4rem 2rem;
-  min-height: 100vh;
-  box-sizing: border-box;
-  background-color: var(--background-light);
+  align-items: center;
+
+  /* Aplicamos el mismo fondo de gradiente animado */
+  background: linear-gradient(135deg, #e0c3fc, #8ec5fc, #e0c3fc, #fbc2eb);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
 }
 
-.content-card {
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* --- 2. TARJETA "GLASSMORPHISM" --- */
+.onboarding-card {
   width: 100%;
   max-width: 550px;
-  background-color: var(--surface-white);
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 8px Gpx rgba(100, 100, 111, 0.1);
-  text-align: left;
+
+  /* Efecto de vidrio esmerilado */
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  padding: 3rem;
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
-.content-card h2 {
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.onboarding-card h2 {
   font-size: 2rem;
   font-weight: 600;
   text-align: center;
@@ -30,60 +53,45 @@
   color: var(--text-primary);
 }
 
-/* 2. Barra de Progreso Mejorada */
+/* --- 3. ELEMENTOS DEL FORMULARIO REFINADOS --- */
 .progress-bar-container {
-  width: 100%; height: 8px; background-color: #e2e8f0; border-radius: 4px; margin-bottom: 2.5rem; overflow: hidden;
+  width: 100%; height: 8px; background-color: rgba(255,255,255,0.5); border-radius: 4px; margin-bottom: 2.5rem; overflow: hidden;
 }
 .progress-bar {
   height: 100%; background-color: var(--primary-brand); border-radius: 4px; transition: width 0.4s ease-in-out;
 }
 
-/* 3. Uploaders de Archivos Refinados */
 .file-upload-label {
-  display: flex; justify-content: space-between; align-items: center; padding: 14px; border: 2px dashed var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 1rem;
+  display: flex; justify-content: space-between; align-items: center; padding: 14px; border: 2px dashed rgba(0,0,0,0.1); border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 1rem;
 }
 .file-upload-label:hover {
-  border-color: var(--primary-brand); background-color: #f9fafb;
+  border-color: var(--primary-brand); background-color: rgba(255,255,255,0.5);
 }
 .file-name {
   font-size: 0.875rem; color: var(--primary-brand); font-style: italic;
 }
 
-/* 4. Campo de Sueldo con Formato de Moneda ($) */
 .salary-input-wrapper {
-  position: relative;
-  margin-bottom: 1.5rem;
+  position: relative; margin-bottom: 1.5rem;
 }
 .salary-input-adornment {
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  font-size: 1rem;
-  color: var(--text-secondary);
-  pointer-events: none; /* Permite hacer clic a través del '$' */
+  position: absolute; top: 50%; left: 16px; transform: translateY(-50%); font-size: 1rem; color: var(--text-secondary); pointer-events: none;
 }
 .salary-input {
-  width: 100%;
-  padding: 14px 16px 14px 2.5rem; /* Espacio a la izquierda para el '$' */
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background-color: var(--background-light);
-  color: var(--text-primary);
-  font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
+  width: 100%; padding: 14px 16px 14px 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: rgba(244, 247, 249, 0.8); color: var(--text-primary); font-size: 1rem; font-family: 'Poppins', sans-serif; box-sizing: border-box;
 }
 .salary-input:focus {
-  outline: none;
-  border-color: var(--primary-brand);
-  box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.2);
+  outline: none; border-color: var(--primary-brand); box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.2);
 }
 
-/* 5. Estilos consistentes para Checkbox y Botón */
 .credit-check-container {
   display: flex; align-items: center; margin-bottom: 2rem;
 }
-.onboarding-container button {
+.onboarding-card button {
   width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--primary-brand); color: white; font-size: 1rem; font-weight: 600; cursor: pointer;
 }
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: #fff; width: 16px; height: 16px; animation: spin 1s ease-in-out infinite; display: inline-block; margin-right: 8px; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+button:disabled { opacity: 0.7; cursor: not-allowed; }
