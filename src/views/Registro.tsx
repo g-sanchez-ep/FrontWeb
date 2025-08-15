@@ -1,28 +1,33 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
+import { useApplication } from '../context/ApplicationContext';
+import { toast } from 'react-toastify'; // -> 1. Importa toast
 import './Registro.css';
 import './ModalVerification.css';
 
 type PasswordErrors = { [key: string]: string };
 
 const Registro = () => {
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
+  const { saveRegistration } = useApplication();
+  const navigate = useNavigate();
+
+  // Estados locales para los campos del formulario
+  const [localEmail, setLocalEmail] = useState('');
+  const [localPhone, setLocalPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [errors, setErrors] = useState<PasswordErrors>({});
 
+  // Estados para los modales
   const [isTermsModalOpen, setTermsModalOpen] = useState(false);
   const [isVerificationModalOpen, setVerificationModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
 
+  // Estado y referencias para el código de verificación
   const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
-
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-
-  const navigate = useNavigate();
 
   const validatePassword = (): boolean => {
     const newErrors: PasswordErrors = {};
@@ -39,7 +44,8 @@ const Registro = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!agreedToTerms) {
-      alert("Debes aceptar los términos y condiciones.");
+      // -> 2. Reemplaza el alert() con una notificación toast
+      toast.error("Debes aceptar los términos y condiciones.");
       return;
     }
     if (validatePassword()) {
@@ -50,7 +56,6 @@ const Registro = () => {
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value;
     if (isNaN(Number(value))) return;
-
     const newCode = [...verificationCode];
     newCode[index] = value.slice(-1);
     setVerificationCode(newCode);
@@ -73,6 +78,7 @@ const Registro = () => {
   };
 
   const handleContinueToOnboarding = () => {
+    saveRegistration({ email: localEmail, phone: localPhone });
     setInfoModalOpen(false);
     navigate('/onboarding');
   };
@@ -82,8 +88,8 @@ const Registro = () => {
       <div className="form-container">
         <h2>Creación de Cuenta</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <input type="tel" placeholder="Teléfono" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                <input type="email" placeholder="Correo" value={localEmail} onChange={(e) => setLocalEmail(e.target.value)} required />
+                <input type="tel" placeholder="Teléfono" value={localPhone} onChange={(e) => setLocalPhone(e.target.value)} required />
                 <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <input type="password" placeholder="Confirmar Contraseña" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
 
@@ -102,7 +108,7 @@ const Registro = () => {
 
       <Modal isOpen={isTermsModalOpen} onClose={() => setTermsModalOpen(false)}>
         <h2>Términos y Condiciones</h2>
-        <p>Aquí va el texto completo de los términos y condiciones del servicio de arrendamiento...</p>
+        <p>Aquí va el texto completo de los términos y condiciones del servicio...</p>
       </Modal>
 
       <Modal isOpen={isVerificationModalOpen} onClose={() => setVerificationModalOpen(false)}>
@@ -112,8 +118,6 @@ const Registro = () => {
           {verificationCode.map((digit, index) => (
             <input
               key={index}
-
-
               ref={(el) => { inputRefs.current[index] = el; }}
               type="text"
               inputMode="numeric"

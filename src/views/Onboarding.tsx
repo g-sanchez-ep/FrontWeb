@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useApplication } from '../context/ApplicationContext';
 import './Onboarding.css';
 
 interface IFiles {
@@ -9,12 +11,15 @@ interface IFiles {
 }
 
 const Onboarding = () => {
+    const { saveOnboarding } = useApplication();
+    const navigate = useNavigate();
+
+
     const [files, setFiles] = useState<IFiles>({ ineFrontal: null, ineTrasero: null, selfie: null });
     const [salary, setSalary] = useState<string>('');
     const [agreedToCreditCheck, setAgreedToCreditCheck] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);
-
-    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name as keyof IFiles;
@@ -23,13 +28,13 @@ const Onboarding = () => {
         if (file) {
             const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'];
             if (!allowedTypes.includes(file.type)) {
-                alert('Tipo de archivo no permitido. Solo se aceptan .jpeg, .jpg, .png, .pdf.');
+                toast.error('Tipo de archivo no permitido.');
                 e.target.value = '';
                 return;
             }
 
             if (file.size > 2 * 1024 * 1024) {
-                alert('El archivo no debe pesar más de 2MB.');
+                toast.error('El archivo no debe pesar más de 2MB.');
                 e.target.value = '';
                 return;
             }
@@ -38,7 +43,6 @@ const Onboarding = () => {
         }
     };
 
-
     useEffect(() => {
         const filledFiles = Object.values(files).filter(f => f !== null).length;
         setProgress((filledFiles / 3) * 100);
@@ -46,16 +50,22 @@ const Onboarding = () => {
 
     const handleSubmit = () => {
         if (Object.values(files).some(f => f === null) || !salary || !agreedToCreditCheck) {
-            alert('Por favor, completa todos los campos.');
+            toast.error('Por favor, completa todos los campos.');
             return;
         }
 
-        // Lógica de resultado aleatorio
-        const resultStatus = Math.random() < 0.5 ? 'aprobado' : 'rechazado';
+        setIsLoading(true);
 
-        navigate('/resultado', {
-            state: { status: resultStatus, salary: Number(salary) }
-        });
+
+        setTimeout(() => {
+            const resultStatus = Math.random() < 0.5 ? 'aprobado' : 'rechazado';
+
+
+            saveOnboarding({ salary: Number(salary), resultStatus });
+
+
+            navigate('/resultado');
+        }, 2000);
     };
 
     return (
@@ -66,7 +76,6 @@ const Onboarding = () => {
             </div>
 
             <div className="file-upload-section">
-                {/* --- NUEVA ESTRUCTURA PARA UPLOADERS --- */}
                 <div className="file-upload-wrapper">
                     <label htmlFor="ineFrontal" className="file-upload-label">
                         <span>INE Frontal</span>
@@ -85,7 +94,7 @@ const Onboarding = () => {
 
                 <div className="file-upload-wrapper">
                     <label htmlFor="selfie" className="file-upload-label">
-                        <span>Selfie</span>
+                        <span>Selfie con tu INE</span>
                         {files.selfie && <span className="file-name">{files.selfie.name}</span>}
                     </label>
                     <input id="selfie" type="file" name="selfie" onChange={handleFileChange} accept=".jpeg,.jpg,.png,.pdf" />
@@ -105,7 +114,17 @@ const Onboarding = () => {
                 <label htmlFor="creditCheck">Acepto la consulta de mi historial en el Buró de Crédito.</label>
             </div>
 
-            <button onClick={handleSubmit}>Continuar</button>
+
+            <button onClick={handleSubmit} disabled={isLoading}>
+                {isLoading ? (
+                    <>
+                        <span className="spinner"></span>
+                        Evaluando...
+                    </>
+                ) : (
+                    'Finalizar Solicitud'
+                )}
+            </button>
         </div>
     );
 };

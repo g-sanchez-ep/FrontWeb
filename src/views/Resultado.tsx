@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useApplication } from '../context/ApplicationContext'; // -> 1. Importa el hook del contexto
 import './Resultado.css';
 
+// Importaciones de imágenes locales
 import versaImg from '../assets/images/nissan-versa.png';
 import rioImg from '../assets/images/kia-rio.png';
 import jettaImg from '../assets/images/vw-jetta.png';
 import rejectedImg from '../assets/images/coche-silueta.png';
-
-
-
-type LocationState = {
-    status: 'aprobado' | 'rechazado';
-    salary: number;
-};
 
 interface ICarOption {
     name: string;
@@ -21,27 +15,21 @@ interface ICarOption {
 }
 
 const Resultado = () => {
-    const location = useLocation();
+    const { application } = useApplication(); // -> 2. Lee los datos del contexto global
 
+    // Obtiene los datos del estado global, con valores por defecto por si se accede a la URL directamente
+    const { resultStatus, salary } = application;
 
-
-
-    const { status: initialStatus, salary } = (location.state as LocationState) || { status: 'rechazado', salary: 0 };
-
-    const [status, setStatus] = useState<'aprobado' | 'rechazado'>(initialStatus);
-
-
-
+    // El estado local 'status' sigue siendo útil para los botones que cambian la vista internamente
+    const [status, setStatus] = useState(resultStatus || 'rechazado');
 
     const maxRent = salary * 0.30;
 
     const carOptions: ICarOption[] = [
-    { name: 'Nissan Versa', rent: 4500, img: versaImg },
-    { name: 'Kia Rio', rent: 5000, img: rioImg },
-    { name: 'VW Jetta', rent: 7000, img: jettaImg }
-
-
-];
+        { name: 'Nissan Versa', rent: 4500, img: versaImg },
+        { name: 'Kia Rio', rent: 5000, img: rioImg },
+        { name: 'VW Jetta', rent: 7000, img: jettaImg }
+    ];
 
     const AprobadoView = () => (
         <div className="result-content approved">
@@ -64,14 +52,14 @@ const Resultado = () => {
     );
 
     const RechazadoView = () => (
-    <div className="result-content rejected">
-        <h2>Lo sentimos</h2>
-        <p>En esta ocasión no fue posible autorizar tu trámite.</p>
-        <img src={rejectedImg} alt="Vehículo no autorizado" className="rejected-img" />
-        <p>Te invitamos a intentarlo nuevamente en otra ocasión.</p>
-        <button onClick={() => setStatus('aprobado')}>Contactar para petición especial</button>
-    </div>
-);
+        <div className="result-content rejected">
+            <h2>Lo sentimos</h2>
+            <p>En esta ocasión no fue posible autorizar tu solicitud de renta.</p>
+            <img src={rejectedImg} alt="Vehículo no autorizado" className="rejected-img" />
+            <p>Te invitamos a intentarlo nuevamente en otra ocasión.</p>
+            <button onClick={() => setStatus('aprobado')}>Contactar para petición especial</button>
+        </div>
+    );
 
     return (
         <div className="resultado-container">
