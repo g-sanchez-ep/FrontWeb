@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApplication } from '../context/ApplicationContext'; // -> 1. Importa el hook del contexto
+import { useApplication } from '../context/ApplicationContext';
 import './Resultado.css';
 
 // Importaciones de imágenes locales
@@ -15,16 +15,10 @@ interface ICarOption {
 }
 
 const Resultado = () => {
-    const { application } = useApplication(); // -> 2. Lee los datos del contexto global
-
-    // Obtiene los datos del estado global, con valores por defecto por si se accede a la URL directamente
+    const { application } = useApplication();
     const { resultStatus, salary } = application;
-
-    // El estado local 'status' sigue siendo útil para los botones que cambian la vista internamente
     const [status, setStatus] = useState(resultStatus || 'rechazado');
-
     const maxRent = salary * 0.30;
-
     const carOptions: ICarOption[] = [
         { name: 'Nissan Versa', rent: 4500, img: versaImg },
         { name: 'Kia Rio', rent: 5000, img: rioImg },
@@ -33,9 +27,13 @@ const Resultado = () => {
 
     const AprobadoView = () => (
         <div className="result-content approved">
-            <h2>¡Felicidades! Tu solicitud ha sido autorizada.</h2>
-            <p>Con base en tu perfil, tu renta mensual máxima es de: <strong>${maxRent.toFixed(2)}</strong></p>
-            <h3>Te sugerimos estas opciones:</h3>
+            <div className="result-header">
+                <div className="result-icon approved">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                </div>
+                <h2>¡Felicidades! Solicitud autorizada.</h2>
+                <p className="subtitle">Basado en tu perfil, tu renta mensual máxima es de: <strong>${maxRent.toFixed(2)}</strong></p>
+            </div>
             <div className="car-options">
                 {carOptions.map(car => (
                     <div className="car-card" key={car.name}>
@@ -47,23 +45,41 @@ const Resultado = () => {
                     </div>
                 ))}
             </div>
-            <button onClick={() => setStatus('rechazado')}>Ver catálogo completo</button>
+            <div className="result-actions">
+                <button className="secondary-action" onClick={() => setStatus('rechazado')}>Ver otras opciones</button>
+            </div>
         </div>
     );
 
     const RechazadoView = () => (
         <div className="result-content rejected">
-            <h2>Lo sentimos</h2>
-            <p>En esta ocasión no fue posible autorizar tu solicitud de renta.</p>
-            <img src={rejectedImg} alt="Vehículo no autorizado" className="rejected-img" />
-            <p>Te invitamos a intentarlo nuevamente en otra ocasión.</p>
-            <button onClick={() => setStatus('aprobado')}>Contactar para petición especial</button>
+            <div className="result-header">
+                <div className="result-icon rejected">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </div>
+                <h2>Solicitud no autorizada</h2>
+            </div>
+
+            {/* --- NUEVO LAYOUT DE DOS COLUMNAS --- */}
+            <div className="rejected-layout">
+                <div className="rejected-image-container">
+                    <img src={rejectedImg} alt="Vehículo no autorizado" className="rejected-img" />
+                </div>
+                <div className="rejected-text-content">
+                    <p>Lo sentimos, en esta ocasión no fue posible realizar su trámite. Te invitamos a intentarlo nuevamente en otra ocasión.</p>
+                    <div className="result-actions">
+                        <button className="primary-action" onClick={() => setStatus('aprobado')}>Contactar para petición especial</button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 
     return (
-        <div className="resultado-container">
-            {status === 'aprobado' ? <AprobadoView /> : <RechazadoView />}
+        <div className="page-container">
+            <div className="content-card">
+                {status === 'aprobado' ? <AprobadoView /> : <RechazadoView />}
+            </div>
         </div>
     );
 };

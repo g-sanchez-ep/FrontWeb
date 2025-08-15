@@ -1,34 +1,43 @@
+/* src/components/Modal.css */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(26, 32, 44, 0.7); /* Fondo oscuro semi-transparente */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000; /* Asegura que esté por encima de todo */
 }
 
 .modal-content {
-  background-color: var(--surface-color);
-  padding: 2rem;
+  background-color: var(--surface-white); /* Fondo blanco sólido */
+  color: var(--text-primary); /* Texto oscuro */
+  padding: 2.5rem;
   border-radius: 8px;
   position: relative;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-weight: 600;
 }
 
 .modal-close-button {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 15px;
+  right: 20px;
   background: none;
   border: none;
   font-size: 2rem;
-  color: var(--text-color);
+  color: var(--text-secondary);
   cursor: pointer;
+  line-height: 1;
 }
